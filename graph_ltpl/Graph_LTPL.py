@@ -336,6 +336,8 @@ class Graph_LTPL(object):
         path_dict, self.__plan_start_node, self.__node_list, self.__const_path_seg = \
             self.__oth.calc_paths(action_id_sel=self.__prev_action_id,
                                   idx_sel_traj=self.__prev_traj_idx)
+        # print(f"self.__plan_start_node:{self.__plan_start_node}")
+        # print(f"self.__const_path_seg:{self.__const_path_seg}")
 
         return path_dict
 
@@ -344,10 +346,10 @@ class Graph_LTPL(object):
     def calc_vel_profile(self,
                          pos_est: np.ndarray,
                          vel_est: float,
-                         vel_max: float = 100.0,
+                         vel_max: float = 8.33,
                          gg_scale: np.ndarray = 1.0,
-                         local_gg: dict = (5.0, 5.0),
-                         ax_max_machines: np.ndarray = np.atleast_2d([100.0, 5.0]),
+                         local_gg: dict = (10.0, 10.5),
+                         ax_max_machines: np.ndarray = np.atleast_2d([100.0, 14.5]),
                          safety_d: float = 30.0,
                          incl_emerg_traj: bool = False) -> tuple:
         """

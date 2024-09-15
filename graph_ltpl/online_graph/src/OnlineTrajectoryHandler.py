@@ -611,7 +611,7 @@ class OnlineTrajectoryHandler(object):
                          ax_max_machines: np.ndarray,
                          safety_d: float,
                          gg_scale: float,
-                         local_gg: dict = (5.0, 5.0),
+                         local_gg: dict = (10.0, 10.5),
                          incl_emerg_traj: bool = False) -> tuple:
         """
         Trims and returns the previously generated trajectory "__last_path_coord" and returns a relevant segment

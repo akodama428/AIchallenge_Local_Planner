@@ -169,7 +169,7 @@ class ObjectlistDummy(object):
             vel_est = np.interp(self.s, self.__s_rl, self.__vel_rl)
 
             obj_list = [{'X': pos_out[0], 'Y': pos_out[1], 'theta': psi_out, 'type': 'physical',
-                         'id': 1, 'length': 5.0, 'v': vel_est}]
+                         'id': 1, 'length': 1.0, 'v': vel_est}]
         else:
             # define dummy objects for testing at specified position
             objA = {'X': 127, 'Y': 82, 'theta': 0.0, 'type': 'physical',

@@ -64,7 +64,11 @@ ltpl_obj.graph_init()
 refline = graph_ltpl.imp_global_traj.src.import_globtraj_csv.\
     import_globtraj_csv(import_path=path_dict['globtraj_input_path'])[0]
 pos_est = refline[0, :]
+pos_est = [89633.15625, 43127.796875]
+print(pos_est)
 heading_est = np.arctan2(np.diff(refline[0:2, 1]), np.diff(refline[0:2, 0])) - np.pi / 2
+heading_est = 0.9467615
+print(heading_est)
 vel_est = 0.0
 
 # set start pos
@@ -77,8 +81,14 @@ ltpl_obj.set_startpos(pos_est=pos_est,
 
 # init dummy object list
 obj_list_dummy = graph_ltpl.testing_tools.src.objectlist_dummy.ObjectlistDummy(dynamic=True,
-                                                                               vel_scale=0.3,
-                                                                               s0=250.0)
+                                                                               vel_scale=0.0,
+                                                                               s0=50.0)
+obj_list_dummy2 = graph_ltpl.testing_tools.src.objectlist_dummy.ObjectlistDummy(dynamic=True,
+                                                                               vel_scale=0.0,
+                                                                               s0=60.0)
+obj_list_dummy3 = graph_ltpl.testing_tools.src.objectlist_dummy.ObjectlistDummy(dynamic=True,
+                                                                               vel_scale=0.0,
+                                                                               s0=70.0)
 
 # init sample zone (NOTE: only valid with the default track and configuration!)
 # INFO: Zones can be used to temporarily block certain regions (e.g. pit lane, accident region, dirty track, ....).
@@ -94,8 +104,9 @@ zone_example = {'sample_zone': [[64, 64, 64, 64, 64, 64, 64, 65, 65, 65, 65, 65,
 
 traj_set = {'straight': None}
 tic = time.time()
+start = time.time()
 
-while True:
+while (tic - start) < 120.0:
     # -- SELECT ONE OF THE PROVIDED TRAJECTORIES -----------------------------------------------------------------------
     # (here: brute-force, replace by sophisticated behavior planner)
     for sel_action in ["right", "left", "straight", "follow"]:  # try to force 'right', else try next in list
@@ -104,11 +115,13 @@ while True:
 
     # get simple object list (one vehicle driving around the track)
     obj_list = obj_list_dummy.get_objectlist()
+    obj_list += obj_list_dummy2.get_objectlist()
+    obj_list += obj_list_dummy3.get_objectlist()
 
     # -- CALCULATE PATHS FOR NEXT TIMESTAMP ----------------------------------------------------------------------------
     ltpl_obj.calc_paths(prev_action_id=sel_action,
                         object_list=obj_list,
-                        blocked_zones=zone_example)
+                        blocked_zones=None)
 
     # -- GET POSITION AND VELOCITY ESTIMATE OF EGO-VEHICLE -------------------------------------------------------------
     # (here: simulation dummy, replace with actual sensor readings)
